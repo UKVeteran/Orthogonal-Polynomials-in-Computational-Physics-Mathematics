@@ -1,112 +1,57 @@
 <div align="center">
 
-
-
 # 📐 Orthogonal Functions & Polynomials in Computational Physics
-
 **An interactive mathematical reference and implementation guide for classic, generalized polynomial families, and cylindrical wave functions.**
-
-
 
 <br>
 
-
-
 <p>
-
   <img src="https://img.shields.io/badge/Physics-Quantum_%26_Classical-0052FF?style=for-the-badge&logo=atom&logoColor=white" alt="Physics Badge"/>
-
   <img src="https://img.shields.io/badge/Math-Sturm--Liouville_Theory-FF3366?style=for-the-badge&logo=docusign&logoColor=white" alt="Math Badge"/>
-
   <img src="https://img.shields.io/badge/Python-SciPy_%26_NumPy-00C853?style=for-the-badge&logo=python&logoColor=white" alt="Python Badge"/>
-
   <img src="https://img.shields.io/badge/License-MIT-9C27B0?style=for-the-badge" alt="License Badge"/>
-
 </p>
-
-
 
 <p align="center">
-
   <a href="#--overview--sturm-liouville-framework">Overview</a> •
-
   <a href="#--the-jacobi-super-family-p_nalpha-beta">Jacobi</a> •
-
   <a href="#--gegenbauer-ultraspherical-polynomials-c_nalpha">Gegenbauer</a> •
-
   <a href="#--legendre-polynomials-p_n">Legendre</a> •
-
   <a href="#--laguerre-polynomials-l_n">Laguerre</a> •
-
   <a href="#--hermite-polynomials-h_n">Hermite</a> •
-
   <a href="#--bessel-functions-j_nu-cylindrical-basis">Bessel</a> •
-
   <a href="#--master-comparison-matrix">Comparison Matrix</a> •
-
   <a href="#--python-implementation--visualization">Python Implementation</a>
-
 </p>
-
-
 
 </div>
 
-
-
 ---
-
-
 
 ## 🌐 Overview & Sturm-Liouville Framework
 
-
-
 Orthogonal polynomials and functions are infinite families of algebraic or transcendental equations that are mutually perpendicular within a weighted Hilbert space $L^2([a, b], w(x))$. They form the foundational basis for solving boundary value problems, quantum mechanical states, and spectral methods.
-
-
 
 All families presented in this repository arise as eigenfunction solutions to the second-order **Sturm-Liouville differential equation**:
 
-
-
 $$
-
 \frac{d}{dx} \left[ p(x) \frac{dy}{dx} \right] + \left[ q(x) + \lambda w(x) \right] y = 0
-
 $$
-
-
 
 <blockquote>
-
 💡 <strong>The Orthogonality Condition:</strong> For any two functions $\phi_n(x)$ and $\phi_m(x)$ within the same family, their inner product over the interval $[a, b]$ with respect to a non-negative weight function $w(x)$ satisfies:
-
 <br><br>
 
-
-
 $$
-
 \langle \phi_n, \phi_m \rangle = \int_{a}^{b} w(x) \phi_n(x) \phi_m(x) \, dx = h_n \delta_{nm}
-
 $$
-
-
 
 where $\delta_{nm}$ is the Kronecker delta and $h_n$ represents the squared normalization norm.
-
 </blockquote>
-
-
 
 ---
 
-
-
 ## 🗂️ Mathematical Hierarchy
-
-
 
 The equations branch based on whether their coordinate domain spaces are flat, spherical, or cylindrical:
 
