@@ -80,6 +80,7 @@ The equations branch based on whether their coordinate domain spaces are flat, s
 │ P_n(x)                       │
 └──────────────────────────────┘
 ```
+
 ---
 
 ## 🟣 The Jacobi Super-Family ($P_n^{(\alpha, \beta)}$)
@@ -400,6 +401,7 @@ plt.tight_layout()
 plt.savefig("orthogonal_functional_matrix.png", dpi=300)
 plt.show()
 
+```python
 from scipy.integrate import simpson
 
 # Compute the first 3 roots for Bessel function of order ν = 0
