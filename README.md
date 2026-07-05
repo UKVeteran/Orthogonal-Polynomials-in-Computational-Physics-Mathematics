@@ -55,31 +55,36 @@ where $\delta_{nm}$ is the Kronecker delta and $h_n$ represents the squared norm
 
 The equations branch based on whether their coordinate domain spaces are flat, spherical, or cylindrical:
 
+```mermaid
+graph TD
+    %% Define Nodes
+    SL[Sturm-Liouville Eigenfunctions] 
+    HP[Hypergeometric / Polynomial]
+    CW[Cylindrical Wave]
+    
+    Jac["Jacobi Polynomials <br> P_n^(α, β)(x)"]
+    Geg["Gegenbauer / Ultraspherical <br> C_n^(α)(x)"]
+    Leg["Legendre Polynomials <br> P_n(x)"]
+    Bes["Bessel Functions <br> J_ν(x)"]
 
+    %% Define Connections
+    SL --> HP
+    SL --> CW
+    
+    HP --> Jac
+    Jac -->|α = β| Geg
+    Geg -->|α = 1/2| Leg
+    
+    CW --> Bes
 
-                  ┌──────────────────────────────────────┐
-                  │    Sturm-Liouville Eigenfunctions    │
-                  └──────────────────┬───────────────────┘
-                                     │
-            ┌────────────────────────┴────────────────────────┐
-            ▼ (Hypergeometric/Polynomial)                     ▼ (Cylindrical Wave)
-┌──────────────────────────────┐                 ┌──────────────────────────────┐
-│  Jacobi Polynomials          │                 │  Bessel Functions            │
-│  P_n^(α, β)(x)               │                 │  J_ν(x)                      │
-└──────────────┬───────────────┘                 └──────────────────────────────┘
-│  (α = β)
-▼
-┌──────────────────────────────┐
-│  Gegenbauer (Ultraspherical) │
-│  C_n^(α)(x)                  │
-└──────────────┬───────────────┘
-│  (α = 1/2)
-▼
-┌──────────────────────────────┐
-│  Legendre Polynomials        │
-│  P_n(x)                      │
-└──────────────────────────────┘
-
+    %% Custom Styling for a cohesive look
+    style SL fill:#1f2937,stroke:#00C853,stroke-width:2px,color:#fff
+    style HP fill:#111827,stroke:#374151,color:#9ca3af
+    style CW fill:#111827,stroke:#374151,color:#9ca3af
+    style Jac fill:#311b92,stroke:#fff,color:#fff
+    style Geg fill:#f57f17,stroke:#fff,color:#fff
+    style Leg fill:#b71c1c,stroke:#fff,color:#fff
+    style Bes fill:#0d47a1,stroke:#fff,color:#fff
 
 ---
 
