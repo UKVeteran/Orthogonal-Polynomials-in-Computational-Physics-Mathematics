@@ -399,6 +399,7 @@ for i, title in enumerate(titles):
 plt.tight_layout()
 plt.savefig("orthogonal_functional_matrix.png", dpi=300)
 plt.show()
+```
 
 ```python
 from scipy.integrate import simpson
