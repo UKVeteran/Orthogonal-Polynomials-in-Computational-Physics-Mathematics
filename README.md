@@ -613,27 +613,17 @@ $$\int_{0}^{1} x J_\nu(\alpha_{\nu, n} x) J_\nu(\alpha_{\nu, m} x) \, dx = \frac
 
 ## 📊 Master Comparison Matrix
 
-
-
 | Function Family | Symbol | Domain $[a, b]$ | Weight $w(x)$ | Orthogonality Target Basis | Normalization ($h_n$) |
-
 | :--- | :---: | :---: | :---: | :---: | :---: |
-
 | **Jacobi** | $P_n^{(\alpha, \beta)}(x)$ | $[-1, 1]$ | $(1-x)^\alpha (1+x)^\beta$ | Varying Polynomial Degree $n$ | $\frac{2^{\alpha+\beta+1}\Gamma(n+\alpha+1)\Gamma(n+\beta+1)}{(2n+\alpha+\beta+1)n! \Gamma(n+\alpha+\beta+1)}$ |
-
 | **Gegenbauer** | $C_n^{(\alpha)}(x)$ | $[-1, 1]$ | $(1-x^2)^{\alpha - \frac{1}{2}}$ | Varying Polynomial Degree $n$ | $\frac{\pi 2^{1-2\alpha} \Gamma(n+2\alpha)}{n!(n+\alpha) [\Gamma(\alpha)]^2}$ |
-
 | **Legendre** | $P_n(x)$ | $[-1, 1]$ | $1$ | Varying Polynomial Degree $n$ | $\frac{2}{2n + 1}$ |
-
 | **Laguerre** | $L_n(x)$ | $[0, \infty)$ | $e^{-x}$ | Varying Polynomial Degree $n$ | $1$ |
-
 | **Hermite** | $H_n(x)$ | $(-\infty, \infty)$ | $e^{-x^2}$ | Varying Polynomial Degree $n$ | $\sqrt{\pi} 2^n n!$ |
-
 | **Bessel (1st Kind)**| $J_\nu(x)$ | $[0, 1]$ | $x$ | Varying Discrete Zeros $\alpha_{\nu, n}$ | $\frac{1}{2} [J_{\nu+1}(\alpha_{\nu, n})]^2$ |
 
-
-
 ---
+
 
 
 
