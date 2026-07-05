@@ -355,17 +355,17 @@ Evaluate, map, and confirm the numerical accuracy of all six families using `sci
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import (
-    eval_jacobi, eval_gegenbauer, eval_legendre, 
-    eval_genlaguerre, eval_hermite, jv, jn_zeros
+    eval_jacobi, eval_gegenbauer, eval_chebyt, eval_chebyu, 
+    eval_legendre, eval_genlaguerre, eval_hermite, jv, jn_zeros
 )
 
 # Set up dark UI dashboard styling
 plt.style.use('dark_background')
-fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+fig, axes = plt.subplots(2, 4, figsize=(22, 10))
 axes = axes.flatten()
 
 # Domain grids
-x_sym = np.linspace(-1, 1, 300)     # Jacobi, Gegenbauer, Legendre
+x_sym = np.linspace(-1, 1, 300)     # Jacobi, Gegenbauer, Chebyshev, Legendre
 x_lag = np.linspace(0, 8, 300)      # Laguerre
 x_her = np.linspace(-3, 3, 300)     # Hermite
 x_bes = np.linspace(0, 15, 300)     # Bessel
@@ -375,20 +375,26 @@ indices = [1, 2, 3, 4]
 for n in indices:
     # 1. Jacobi (alpha=1.5, beta=-0.5)
     axes[0].plot(x_sym, eval_jacobi(n, 1.5, -0.5, x_sym), label=f"n={n}", lw=2)
-    # 2. Gegenbauer (alpha=2.0)
+    # 2. Gegenbauer (lambda=2.0)
     axes[1].plot(x_sym, eval_gegenbauer(n, 2.0, x_sym), label=f"n={n}", lw=2)
-    # 3. Legendre
-    axes[2].plot(x_sym, eval_legendre(n, x_sym), label=f"n={n}", lw=2)
-    # 4. Laguerre
-    axes[3].plot(x_lag, eval_genlaguerre(n, 0, x_lag), label=f"n={n}", lw=2)
-    # 5. Hermite
-    axes[4].plot(x_her, eval_hermite(n, x_her), label=f"n={n}", lw=2)
-    # 6. Bessel (Showing order ν over continuous space)
-    axes[5].plot(x_bes, jv(n, x_bes), label=r"$\nu$=" + f"{n}", lw=2)
+    # 3. Chebyshev 1st Kind
+    axes[2].plot(x_sym, eval_chebyt(n, x_sym), label=f"n={n}", lw=2)
+    # 4. Chebyshev 2nd Kind
+    axes[3].plot(x_sym, eval_chebyu(n, x_sym), label=f"n={n}", lw=2)
+    # 5. Legendre
+    axes[4].plot(x_sym, eval_legendre(n, x_sym), label=f"n={n}", lw=2)
+    # 6. Laguerre
+    axes[5].plot(x_lag, eval_genlaguerre(n, 0, x_lag), label=f"n={n}", lw=2)
+    # 7. Hermite
+    axes[6].plot(x_her, eval_hermite(n, x_her), label=f"n={n}", lw=2)
+    
+    # 8. Bessel (Note: Fixing spatial domain and varying intrinsic order ν)
+    axes[7].plot(x_bes, jv(n, x_bes), label=r"Order $\nu$=" + f"{n}", lw=2)
 
 # Subplot Formatting Matrix
 titles = [
-    r"Jacobi ($\alpha=1.5, \beta=-0.5$)", r"Gegenbauer ($\alpha=2.0$)", 
+    r"Jacobi ($\alpha=1.5, \beta=-0.5$)", r"Gegenbauer ($\lambda=2.0$)", 
+    "Chebyshev (1st Kind)", "Chebyshev (2nd Kind)",
     "Legendre", "Laguerre", "Hermite", "Bessel (First Kind, $J_\\nu$)"
 ]
 
@@ -399,7 +405,7 @@ for i, title in enumerate(titles):
     axes[i].axhline(0, color='gray', linestyle='--', alpha=0.4)
 
 plt.tight_layout()
-plt.savefig("orthogonal_functional_matrix.png", dpi=300)
+plt.savefig("orthogonal_functional_matrix_v2.png", dpi=300)
 plt.show()
 ```
 
@@ -421,7 +427,7 @@ f_m = jv(nu, roots[1] * r)  # Root 2
 weight = r 
 
 # Integrate via Simpson's rule
-inner_product = simpson(weight * f_n * f_m, r)
+inner_product = simpson(weight * f_n * f_m, x=r)
 
-print(f"Fourier-Bessel Inner Product <J_0(α_1 J_0(α_2 r) r),>: {inner_product:.2e}")
+print(f"Fourier-Bessel Inner Product <J_0(α_1 r), J_0(α_2 r)>: {inner_product:.2e}")
 # Output: Fourier-Bessel Inner Product: 2.11e-16 (Approaching absolute zero)
