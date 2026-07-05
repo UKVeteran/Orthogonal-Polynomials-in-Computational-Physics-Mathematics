@@ -1,62 +1,250 @@
-<div align="center">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orthogonal Functions & Polynomials in Computational Physics</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-# 📐 Orthogonal Functions & Polynomials in Computational Physics
-**An interactive mathematical reference and implementation guide for classic, generalized polynomial families, and cylindrical wave functions.**
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-color: #c9d1d9;
+            --accent-green: #00C853;
+            --accent-blue: #58a6ff;
+            --accent-purple: #bc8cff;
+            --accent-yellow: #d29922;
+            --accent-red: #ff7b72;
+            --code-bg: #21262d;
+        }
 
-<br>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
 
-<p>
-  <img src="https://img.shields.io/badge/Physics-Quantum_%26_Classical-0052FF?style=for-the-badge&logo=atom&logoColor=white" alt="Physics Badge"/>
-  <img src="https://img.shields.io/badge/Math-Sturm--Liouville_Theory-FF3366?style=for-the-badge&logo=docusign&logoColor=white" alt="Math Badge"/>
-  <img src="https://img.shields.io/badge/Python-SciPy_%26_NumPy-00C853?style=for-the-badge&logo=python&logoColor=white" alt="Python Badge"/>
-  <img src="https://img.shields.io/badge/License-MIT-9C27B0?style=for-the-badge" alt="License Badge"/>
-</p>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-<p align="center">
-  <a href="#--overview--sturm-liouville-framework">Overview</a> •
-  <a href="#--the-jacobi-super-family-p_nalpha-beta">Jacobi</a> •
-  <a href="#--gegenbauer-ultraspherical-polynomials-c_nalpha">Gegenbauer</a> •
-  <a href="#--legendre-polynomials-p_n">Legendre</a> •
-  <a href="#--laguerre-polynomials-l_n">Laguerre</a> •
-  <a href="#--hermite-polynomials-h_n">Hermite</a> •
-  <a href="#--bessel-functions-j_nu-cylindrical-basis">Bessel</a> •
-  <a href="#--master-comparison-matrix">Comparison Matrix</a> •
-  <a href="#--python-implementation--visualization">Python Implementation</a>
-</p>
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-</div>
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
 
----
+        h2 {
+            font-size: 1.6rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-top: 40px;
+            color: #ffffff;
+        }
 
-## 🌐 Overview & Sturm-Liouville Framework
+        h3 {
+            color: var(--accent-green);
+            margin-top: 0;
+        }
 
-Orthogonal polynomials and functions are infinite families of algebraic or transcendental equations that are mutually perpendicular within a weighted Hilbert space $L^2([a, b], w(x))$. They form the foundational basis for solving boundary value problems, quantum mechanical states, and spectral methods.
+        a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
 
-All families presented in this repository arise as eigenfunction solutions to the second-order **Sturm-Liouville differential equation**:
+        a:hover {
+            text-decoration: underline;
+        }
 
-$$
-\frac{d}{dx} \left[ p(x) \frac{dy}{dx} \right] + \left[ q(x) + \lambda w(x) \right] y = 0
-$$
+        .badges img {
+            margin: 0 4px;
+        }
 
-<blockquote>
-💡 <strong>The Orthogonality Condition:</strong> For any two functions $\phi_n(x)$ and $\phi_m(x)$ within the same family, their inner product over the interval $[a, b]$ with respect to a non-negative weight function $w(x)$ satisfies:
-<br><br>
+        .nav-links {
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
 
-$$
-\langle \phi_n, \phi_m \rangle = \int_{a}^{b} w(x) \phi_n(x) \phi_m(x) \, dx = h_n \delta_{nm}
-$$
+        hr {
+            border: 0;
+            height: 1px;
+            background: var(--border-color);
+            margin: 40px 0;
+        }
 
-where $\delta_{nm}$ is the Kronecker delta and $h_n$ represents the squared normalization norm.
-</blockquote>
+        blockquote {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-blue);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
 
----
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+        }
 
-## 🗂️ Mathematical Hierarchy
+        code {
+            font-family: ui-monospace, SFMono-Regular, SF Pro Mono, Menlo, Monaco, Consolas, monospace;
+            background-color: rgba(110, 118, 129, 0.2);
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-size: 85%;
+        }
 
-The equations branch based on whether their coordinate domain spaces are flat, spherical, or cylindrical:
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            font-size: 90%;
+            color: #e6edf3;
+        }
 
-```
-┌──────────────────────────────────────────────────────────────┐
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--code-bg);
+            color: #ffffff;
+        }
+
+        details {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            outline: none;
+        }
+
+        /* Context Color Accents */
+        .txt-purple { color: var(--accent-purple); }
+        .txt-yellow { color: var(--accent-yellow); }
+        .txt-red { color: var(--accent-red); }
+        .txt-green { color: var(--accent-green); }
+        .txt-blue { color: var(--accent-blue); }
+
+        /* Multi-column layouts for family blocks */
+        .family-layout {
+            display: flex;
+            gap: 20px;
+        }
+        .family-sidebar {
+            flex: 3;
+            background: rgba(255,255,255,0.02);
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px dashed var(--border-color);
+        }
+        .family-body {
+            flex: 7;
+        }
+
+        @media(max-width: 768px) {
+            .family-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="tex2jax_process">
+
+<div class="container">
+
+    <header>
+        <h1>📐 Orthogonal Functions &amp; Polynomials in Computational Physics</h1>
+        <p><strong>An interactive mathematical reference and implementation guide for classic, generalized polynomial families, and cylindrical wave functions.</strong></p>
+        
+        <div class="badges">
+            <img src="https://img.shields.io/badge/Physics-Quantum_%26_Classical-0052FF?style=for-the-badge&logo=atom&logoColor=white" alt="Physics Badge"/>
+            <img src="https://img.shields.io/badge/Math-Sturm--Liouville_Theory-FF3366?style=for-the-badge&logo=docusign&logoColor=white" alt="Math Badge"/>
+            <img src="https://img.shields.io/badge/Python-SciPy_%26_NumPy-00C853?style=for-the-badge&logo=python&logoColor=white" alt="Python Badge"/>
+            <img src="https://img.shields.io/badge/License-MIT-9C27B0?style=for-the-badge" alt="License Badge"/>
+        </div>
+
+        <div class="nav-links">
+            <a href="#overview">Overview</a> •
+            <a href="#jacobi">Jacobi</a> •
+            <a href="#gegenbauer">Gegenbauer</a> •
+            <a href="#chebyshev">Chebyshev</a> •
+            <a href="#legendre">Legendre</a> •
+            <a href="#laguerre">Laguerre</a> •
+            <a href="#hermite">Hermite</a> •
+            <a href="#bessel">Bessel</a> •
+            <a href="#matrix">Comparison Matrix</a> •
+            <a href="#python">Python Implementation</a>
+        </div>
+    </header>
+
+    <hr>
+
+    <section id="overview">
+        <h2>🌐 Overview &amp; Sturm-Liouville Framework</h2>
+        <p>Orthogonal polynomials and functions are infinite families of algebraic or transcendental equations that are mutually perpendicular within a weighted Hilbert space $L^2([a, b], w(x))$. They form the foundational basis for solving boundary value problems, quantum mechanical states, and spectral methods.</p>
+        
+        <p>All families presented in this repository arise as eigenfunction solutions to the second-order <strong>Sturm-Liouville differential equation</strong>:</p>
+        
+        $$ \frac{d}{dx} \left[ p(x) \frac{dy}{dx} \right] + \left[ q(x) + \lambda w(x) \right] y = 0 $$
+
+        <blockquote>
+            💡 <strong>The Orthogonality Condition:</strong> For any two functions $\phi_n(x)$ and $\phi_m(x)$ within the same family, their inner product over the interval $[a, b]$ with respect to a non-negative weight function $w(x)$ satisfies:
+            <br><br>
+            $$ \langle \phi_n, \phi_m \rangle = \int_{a}^{b} w(x) \phi_n(x) \phi_m(x) \, dx = h_n \delta_{nm} $$
+            where $\delta_{nm}$ is the Kronecker delta and $h_n$ represents the squared normalization norm.
+        </blockquote>
+    </section>
+
+    <hr>
+
+    <section id="hierarchy">
+        <h2>🗂️ Mathematical Hierarchy</h2>
+        <p>The equations branch based on whether their coordinate domain spaces are flat, spherical, or cylindrical:</p>
+        <pre>┌──────────────────────────────────────────────────────────────┐
 │                Sturm-Liouville Eigenfunctions                │
 └───────────────────────────┬──────────────────────────────────┘
                             │
@@ -79,280 +267,271 @@ The equations branch based on whether their coordinate domain spaces are flat, s
 │Chebyshev │ │ Legendre │ │Chebyshev │
 │1st Kind  │ │          │ │2nd Kind  │
 │T_n(x)    │ │ P_n(x)   │ │U_n(x)    │
-└──────────┘ └──────────┘ └──────────┘
-```
+└──────────┘ └──────────┘ └──────────┘</pre>
+    </section>
 
----
+    <hr>
 
-## 🟣 The Jacobi Super-Family ($P_n^{(\alpha, \beta)}$)
+    <section id="jacobi">
+        <h2><span class="txt-purple">🟣</span> The Jacobi Super-Family ($P_n^{(\alpha, \beta)}$)</h2>
+        <div class="family-layout">
+            <div class="family-sidebar">
+                <p><strong>Domain Interval</strong><br><code>[-1, 1]</code></p>
+                <p><strong>Weight Function</strong><br>$w(x) = (1-x)^\alpha (1+x)^\beta$<br><em>where $\alpha, \beta > -1$</em></p>
+                <p><strong>Primary Applications</strong><br>• Spectral element methods<br>• Rotation matrices in QM<br>• General hypergeometric solutions</p>
+            </div>
+            <div class="family-body">
+                <h3>Core Equations</h3>
+                <p><strong>Differential Equation</strong></p>
+                $$(1-x^2)y'' + [\beta - \alpha - (\alpha + \beta + 2)x]y' + n(n + \alpha + \beta + 1)y = 0$$
+                <p><strong>Rodrigues' Formula</strong></p>
+                $$P_n^{(\alpha, \beta)}(x) = \frac{(-1)^n}{2^n n!} (1-x)^{-\alpha}(1+x)^{-\beta} \frac{d^n}{dx^n} \left[ (1-x)^{\alpha+n}(1+x)^{\beta+n} \right]$$
+                <p><strong>Orthogonality Norm ($h_n$)</strong></p>
+                $$h_n = \frac{2^{\alpha+\beta+1}}{2n+\alpha+\beta+1} \frac{\Gamma(n+\alpha+1)\Gamma(n+\beta+1)}{n! \Gamma(n+\alpha+\beta+1)}$$
+            </div>
+        </div>
+        <details>
+            <summary>🔍 Click to expand: First Three Jacobi Polynomials</summary>
+            <ul>
+                <li>$P_0^{(\alpha, \beta)}(x) = 1$</li>
+                <li>$P_1^{(\alpha, \beta)}(x) = \frac{\alpha + \beta + 2}{2}x + \frac{\alpha - \beta}{2}$</li>
+                <li>$P_2^{(\alpha, \beta)}(x) = \frac{(\alpha+\beta+3)(\alpha+\beta+4)}{8}x^2 + \frac{(\alpha-\beta)(\alpha+\beta+3)}{4}x + \frac{(\alpha-\beta)^2 - (\alpha+\beta+4)}{8}$</li>
+            </ul>
+        </details>
+    </section>
 
-<table>
-<tr>
-<td width="30%" valign="top">
-<br>
-<strong>Domain Interval</strong><br>
-<code>[-1, 1]</code>
-<br><br>
-<strong>Weight Function</strong><br>
-$w(x) = (1-x)^\alpha (1+x)^\beta$<br>
-<em>where $\alpha, \beta > -1$</em>
-<br><br>
-<strong>Primary Applications</strong><br>
-• Spectral element methods<br>
-• Rotation matrices in QM<br>
-• General hypergeometric solutions
-</td>
-<td width="70%" valign="top">
+    <hr>
 
-### Core Equations
+    <section id="gegenbauer">
+        <h2><span class="txt-yellow">🟡</span> Gegenbauer (Ultraspherical) Polynomials ($C_n^{(\lambda)}$)</h2>
+        <div class="family-layout">
+            <div class="family-sidebar">
+                <p><strong>Domain Interval</strong><br><code>[-1, 1]</code></p>
+                <p><strong>Weight Function</strong><br>$w(x) = (1-x^2)^{\lambda - 1/2}$<br><em>where $\lambda > -1/2, \lambda \neq 0$</em></p>
+                <p><strong>Primary Applications</strong><br>• Hyperspherical harmonics<br>• Higher-dimensional potential theory<br>• Approximation theory</p>
+            </div>
+            <div class="family-body">
+                <h3>Core Equations</h3>
+                <p><strong>Differential Equation</strong></p>
+                $$(1-x^2)y'' - (2\lambda + 1)xy' + n(n + 2\lambda)y = 0$$
+                <p><strong>Rodrigues' Formula</strong></p>
+                $$C_n^{(\lambda)}(x) = \frac{(-2)^n}{n!} \frac{\Gamma(n+\lambda)\Gamma(n+2\lambda)}{\Gamma(\lambda)\Gamma(2n+2\lambda)} (1-x^2)^{1/2-\lambda} \frac{d^n}{dx^n} \left[ (1-x^2)^{n+\lambda-1/2} \right]$$
+                <p><strong>Orthogonality Norm ($h_n$)</strong></p>
+                $$h_n = \frac{\pi 2^{1-2\lambda} \Gamma(n+2\lambda)}{n!(n+\lambda) [\Gamma(\lambda)]^2}$$
+            </div>
+        </div>
+        <details>
+            <summary>🔍 Click to expand: First Three Gegenbauer Polynomials</summary>
+            <ul>
+                <li>$C_0^{(\lambda)}(x) = 1$</li>
+                <li>$C_1^{(\lambda)}(x) = 2\lambda x$</li>
+                <li>$C_2^{(\lambda)}(x) = 2\lambda(\lambda + 1)x^2 - \lambda$</li>
+            </ul>
+        </details>
+    </section>
 
-**Differential Equation**
-$$(1-x^2)y'' + [\beta - \alpha - (\alpha + \beta + 2)x]y' + n(n + \alpha + \beta + 1)y = 0$$
+    <hr>
 
-**Rodrigues' Formula**
-$$P_n^{(\alpha, \beta)}(x) = \frac{(-1)^n}{2^n n!} (1-x)^{-\alpha}(1+x)^{-\beta} \frac{d^n}{dx^n} \left[ (1-x)^{\alpha+n}(1+x)^{\beta+n} \right]$$
+    <section id="chebyshev">
+        <h2><span class="txt-yellow">🟠</span> Chebyshev Polynomials ($T_n, U_n$)</h2>
+        <p>Direct descendants of the Gegenbauer family, Chebyshev polynomials are unique because they are fundamentally trigonometric identities mapped elegantly onto algebraic spaces.</p>
+        <div class="family-layout">
+            <div style="flex: 1; padding-right: 10px;">
+                <h3>First Kind ($T_n$) — $\lambda \to 0$</h3>
+                <p><strong>Weight:</strong> $w(x) = \frac{1}{\sqrt{1-x^2}}$</p>
+                <p><strong>Trigonometric Identity:</strong> $T_n(\cos\theta) = \cos(n\theta)$</p>
+                <p><strong>Applications:</strong> Minimax approximations, optimal grid nodes.</p>
+                <p><strong>Differential Equation:</strong></p>
+                $$(1-x^2)y'' - xy' + n^2y = 0$$
+                <p><strong>Orthogonality Norm:</strong></p>
+                $$h_n = \begin{cases} \pi & n = 0 \\ \pi/2 & n \ge 1 \end{cases}$$
+            </div>
+            <div style="flex: 1; padding-left: 10px; border-left: 1px solid var(--border-color);">
+                <h3>Second Kind ($U_n$) — $\lambda = 1$</h3>
+                <p><strong>Weight:</strong> $w(x) = \sqrt{1-x^2}$</p>
+                <p><strong>Trigonometric Identity:</strong> $U_n(\cos\theta) = \frac{\sin((n+1)\theta)}{\sin\theta}$</p>
+                <p><strong>Applications:</strong> Airfoil mechanics, hyperspherical mapping.</p>
+                <p><strong>Differential Equation:</strong></p>
+                $$(1-x^2)y'' - 3xy' + n(n+2)y = 0$$
+                <p><strong>Orthogonality Norm:</strong></p>
+                $$h_n = \frac{\pi}{2} \quad \text{for all } n$$
+            </div>
+        </div>
+    </section>
 
-**Orthogonality Norm ($h_n$)**
-$$h_n = \frac{2^{\alpha+\beta+1}}{2n+\alpha+\beta+1} \frac{\Gamma(n+\alpha+1)\Gamma(n+\beta+1)}{n! \Gamma(n+\alpha+\beta+1)}$$
+    <hr>
 
-</td>
-</tr>
-</table>
+    <section id="legendre">
+        <h2><span class="txt-red">🔴</span> Legendre Polynomials ($P_n$)</h2>
+        <div class="family-layout">
+            <div class="family-sidebar">
+                <p><strong>Domain Interval</strong><br><code>[-1, 1]</code></p>
+                <p><strong>Weight Function</strong><br>$w(x) = 1$<br><em>(Direct mapping for $\lambda = 1/2$)</em></p>
+                <p><strong>Primary Applications</strong><br>• Multipole expansions (Gravity/Electrostatics)<br>• Spherical harmonics in 3D geometry<br>• Gauss-Legendre numerical quadrature</p>
+            </div>
+            <div class="family-body">
+                <h3>Core Equations</h3>
+                <p><strong>Differential Equation</strong></p>
+                $$(1-x^2)y'' - 2xy' + n(n+1)y = 0$$
+                <p><strong>Rodrigues' Formula</strong></p>
+                $$P_n(x) = \frac{1}{2^n n!} \frac{d^n}{dx^n} \left[ (x^2 - 1)^n \right]$$
+                <p><strong>Orthogonality Norm ($h_n$)</strong></p>
+                $$h_n = \frac{2}{2n + 1}$$
+            </div>
+        </div>
+    </section>
 
-<details>
-<summary><b>🔍 Click to expand: First Three Jacobi Polynomials</b></summary>
-<br>
-<ul>
-  <li>$P_0^{(\alpha, \beta)}(x) = 1$</li>
-  <li>$P_1^{(\alpha, \beta)}(x) = \frac{\alpha + \beta + 2}{2}x + \frac{\alpha - \beta}{2}$</li>
-  <li>$P_2^{(\alpha, \beta)}(x) = \frac{(\alpha+\beta+3)(\alpha+\beta+4)}{8}x^2 + \frac{(\alpha-\beta)(\alpha+\beta+3)}{4}x + \frac{(\alpha-\beta)^2 - (\alpha+\beta+4)}{8}$</li>
-</ul>
-</details>
+    <hr>
 
----
+    <section id="laguerre">
+        <h2><span class="txt-green">🟢</span> Laguerre Polynomials ($L_n$)</h2>
+        <div class="family-layout">
+            <div class="family-sidebar">
+                <p><strong>Domain Interval</strong><br><code>[0, ∞)</code></p>
+                <p><strong>Weight Function</strong><br>$w(x) = e^{-x}$</p>
+                <p><strong>Primary Applications</strong><br>• Hydrogen atom radial wavefunctions<br>• Quantum optics (Fock states)<br>• Dynamic engineering systems</p>
+            </div>
+            <div class="family-body">
+                <h3>Core Equations</h3>
+                <p><strong>Differential Equation</strong></p>
+                $$xy'' + (1-x)y' + ny = 0$$
+                <p><strong>Rodrigues' Formula</strong></p>
+                $$L_n(x) = \frac{e^x}{n!} \frac{d^n}{dx^n} \left[ e^{-x} x^n \right]$$
+                <p><strong>Orthogonality Norm ($h_n$)</strong></p>
+                $$h_n = 1$$
+            </div>
+        </div>
+    </section>
 
-## 🟡 Gegenbauer (Ultraspherical) Polynomials ($C_n^{(\alpha)}$)
+    <hr>
 
-<table>
-<tr>
-<td width="30%" valign="top">
-<br>
-<strong>Domain Interval</strong><br>
-<code>[-1, 1]</code>
-<br><br>
-<strong>Weight Function</strong><br>
-$w(x) = (1-x^2)^{\alpha - 1/2}$<br>
-<em>where $\alpha > -1/2, \alpha \neq 0$</em>
-<br><br>
-<strong>Primary Applications</strong><br>
-• Hyperspherical harmonics<br>
-• Higher-dimensional potential theory<br>
-• Approximation theory
-</td>
-<td width="70%" valign="top">
+    <section id="hermite">
+        <h2><span class="txt-blue">🔵</span> Hermite Polynomials ($H_n$)</h2>
+        <div class="family-layout">
+            <div class="family-sidebar">
+                <p><strong>Domain Interval</strong><br><code>(-∞, ∞)</code></p>
+                <p><strong>Weight Function</strong><br>$w(x) = e^{-x^2}$</p>
+                <p><strong>Primary Applications</strong><br>• Quantum Harmonic Oscillators<br>• Gaussian wave packet analysis<br>• Probability density estimations</p>
+            </div>
+            <div class="family-body">
+                <h3>Core Equations <em>(Physicists' Convention)</em></h3>
+                <p><strong>Differential Equation</strong></p>
+                $$y'' - 2xy' + 2ny = 0$$
+                <p><strong>Rodrigues' Formula</strong></p>
+                $$H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n} \left[ e^{-x^2} \right]$$
+                <p><strong>Orthogonality Norm ($h_n$)</strong></p>
+                $$h_n = \sqrt{\pi} 2^n n!$$
+            </div>
+        </div>
+    </section>
 
-### Core Equations
+    <hr>
 
-**Differential Equation**
-$$(1-x^2)y'' - (2\alpha + 1)xy' + n(n + 2\alpha)y = 0$$
+    <section id="bessel">
+        <h2><span class="txt-blue">⚪</span> Bessel Functions ($J_\nu$) — Cylindrical Basis</h2>
+        <p>Unlike standard polynomial families that change their intrinsic algebraic architecture per index $n$, Bessel functions achieve orthogonality over a fixed order $\nu$ by mapping variables across their <strong>discrete roots</strong>. This is known as a <strong>Fourier-Bessel series</strong>.</p>
+        
+        <div class="family-layout">
+            <div class="family-sidebar">
+                <p><strong>Domain Interval</strong><br><code>[0, R]</code> (where boundary constraints occur)</p>
+                <p><strong>Weight Function</strong><br>$w(x) = x$</p>
+                <p><strong>Primary Applications</strong><br>• Vibrating circular drumheads<br>• Cylindrical electromagnetic waveguides<br>• Transient heat conduction in cylinders</p>
+            </div>
+            <div class="family-body">
+                <h3>Core Equations <em>(First Kind, Order $\nu$)</em></h3>
+                <p><strong>Differential Equation</strong></p>
+                $$x^2 y'' + x y' + (x^2 - \nu^2)y = 0$$
+                <p><strong>Series Representation</strong></p>
+                $$J_\nu(x) = \sum_{m=0}^{\infty} \frac{(-1)^m}{m! \, \Gamma(m + \nu + 1)} \left( \frac{x}{2} \right)^{2m + \nu}$$
+                <p><strong>Root-Based Orthogonality Condition</strong></p>
+                <p>Let $\alpha_{\nu, n}$ and $\alpha_{\nu, m}$ be the $n$-th and $m$-th positive zeros of $J_\nu(x)$. Over a normalized domain radius $R=1$:</p>
+                $$\int_{0}^{1} x J_\nu(\alpha_{\nu, n} x) J_\nu(\alpha_{\nu, m} x) \, dx = \frac{1;}{2} [J_{\nu+1}(\alpha_{\nu, n})]^2 \delta_{nm}$$
+            </div>
+        </div>
+    </section>
 
-**Rodrigues' Formula**
-$$C_n^{(\alpha)}(x) = \frac{(-2)^n}{n!} \frac{\Gamma(n+\alpha)\Gamma(n+2\alpha)}{\Gamma(\alpha)\Gamma(2n+2\alpha)} (1-x^2)^{1/2-\alpha} \frac{d^n}{dx^n} \left[ (1-x^2)^{n+\alpha-1/2} \right]$$
+    <hr>
 
-**Orthogonality Norm ($h_n$)**
-$$h_n = \frac{\pi 2^{1-2\alpha} \Gamma(n+2\alpha)}{n!(n+\alpha) [\Gamma(\alpha)]^2}$$
+    <section id="matrix">
+        <h2>📊 Master Comparison Matrix</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Function Family</th>
+                    <th>Symbol</th>
+                    <th>Domain $[a, b]$</th>
+                    <th>Weight $w(x)$</th>
+                    <th>Normalization ($h_n$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Jacobi</strong></td>
+                    <td>$P_n^{(\alpha, \beta)}(x)$</td>
+                    <td>$[-1, 1]$</td>
+                    <td>$(1-x)^\alpha (1+x)^\beta$</td>
+                    <td>$\frac{2^{\alpha+\beta+1}\Gamma(n+\alpha+1)\Gamma(n+\beta+1)}{(2n+\alpha+\beta+1)n! \Gamma(n+\alpha+\beta+1)}$</td>
+                </tr>
+                <tr>
+                    <td><strong>Gegenbauer</strong></td>
+                    <td>$C_n^{(\lambda)}(x)$</td>
+                    <td>$[-1, 1]$</td>
+                    <td>$(1-x^2)^{\lambda - \frac{1}{2}}$</td>
+                    <td>$\frac{\pi 2^{1-2\lambda} \Gamma(n+2\lambda)}{n!(n+\lambda) [\Gamma(\lambda)]^2}$</td>
+                </tr>
+                <tr>
+                    <td><strong>Chebyshev (1st Kind)</strong></td>
+                    <td>$T_n(x)$</td>
+                    <td>$[-1, 1]$</td>
+                    <td>$(1-x^2)^{-1/2}$</td>
+                    <td>$\pi$ for $n=0$; $\pi/2$ for $n \ge 1$</td>
+                </tr>
+                <tr>
+                    <td><strong>Chebyshev (2nd Kind)</strong></td>
+                    <td>$U_n(x)$</td>
+                    <td>$[-1, 1]$</td>
+                    <td>$(1-x^2)^{1/2}$</td>
+                    <td>$\pi/2$</td>
+                </tr>
+                <tr>
+                    <td><strong>Legendre</strong></td>
+                    <td>$P_n(x)$</td>
+                    <td>$[-1, 1]$</td>
+                    <td>$1$</td>
+                    <td>$\frac{2}{2n + 1}$</td>
+                </tr>
+                <tr>
+                    <td><strong>Laguerre</strong></td>
+                    <td>$L_n(x)$</td>
+                    <td>$[0, \infty)$</td>
+                    <td>$e^{-x}$</td>
+                    <td>$1$</td>
+                </tr>
+                <tr>
+                    <td><strong>Hermite</strong></td>
+                    <td>$H_n(x)$</td>
+                    <td>$(-\infty, \infty)$</td>
+                    <td>$e^{-x^2}$</td>
+                    <td>$\sqrt{\pi} 2^n n!$</td>
+                </tr>
+                <tr>
+                    <td><strong>Bessel (1st Kind)</strong></td>
+                    <td>$J_\nu(x)$</td>
+                    <td>$[0, 1]$</td>
+                    <td>$x$</td>
+                    <td>$\frac{1}{2} [J_{\nu+1}(\alpha_{\nu, n})]^2$</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
-</td>
-</tr>
-</table>
+    <hr>
 
-<details>
-<summary><b>🔍 Click to expand: First Three Gegenbauer Polynomials</b></summary>
-<br>
-<ul>
-  <li>$C_0^{(\alpha)}(x) = 1$</li>
-  <li>$C_1^{(\alpha)}(x) = 2\alpha x$</li>
-  <li>$C_2^{(\alpha)}(x) = 2\alpha(\alpha + 1)x^2 - \alpha$</li>
-</ul>
-</details>
-
----
-
-## 🔴 Legendre Polynomials ($P_n$)
-
-<table>
-<tr>
-<td width="30%" valign="top">
-<br>
-<strong>Domain Interval</strong><br>
-<code>[-1, 1]</code>
-<br><br>
-<strong>Weight Function</strong><br>
-$w(x) = 1$
-<br><br>
-<strong>Primary Applications</strong><br>
-• Multipole expansions (Gravity/Electrostatics)<br>
-• Spherical harmonics in 3D geometry<br>
-• Gauss-Legendre quadrature numerical limits
-</td>
-<td width="70%" valign="top">
-
-### Core Equations
-
-**Differential Equation**
-$$(1-x^2)y'' - 2xy' + n(n+1)y = 0$$
-
-**Rodrigues' Formula**
-$$P_n(x) = \frac{1}{2^n n!} \frac{d^n}{dx^n} \left[ (x^2 - 1)^n \right]$$
-
-**Orthogonality Norm ($h_n$)**
-$$h_n = \frac{2}{2n + 1}$$
-
-**Recurrence Relation**
-$$(n+1)P_{n+1}(x) = (2n+1)x P_n(x) - n P_{n-1}(x)$$
-
-</td>
-</tr>
-</table>
-
----
-
-## 🟢 Laguerre Polynomials ($L_n$)
-
-<table>
-<tr>
-<td width="30%" valign="top">
-<br>
-<strong>Domain Interval</strong><br>
-<code>[0, ∞)</code>
-<br><br>
-<strong>Weight Function</strong><br>
-$w(x) = e^{-x}$
-<br><br>
-<strong>Primary Applications</strong><br>
-• Hydrogen atom radial wavefunctions<br>
-• Quantum optics (Fock states)<br>
-• Dynamic systems analysis
-</td>
-<td width="70%" valign="top">
-
-### Core Equations
-
-**Differential Equation**
-$$xy'' + (1-x)y' + ny = 0$$
-
-**Rodrigues' Formula**
-$$L_n(x) = \frac{e^x}{n!} \frac{d^n}{dx^n} \left[ e^{-x} x^n \right]$$
-
-**Orthogonality Norm ($h_n$)**
-$$h_n = 1$$
-
-**Recurrence Relation**
-$$(n+1)L_{n+1}(x) = (2n+1-x)L_n(x) - n L_{n-1}(x)$$
-
-</td>
-</tr>
-</table>
-
----
-
-## 🔵 Hermite Polynomials ($H_n$)
-
-<table>
-<tr>
-<td width="30%" valign="top">
-<br>
-<strong>Domain Interval</strong><br>
-<code>(-∞, ∞)</code>
-<br><br>
-<strong>Weight Function</strong><br>
-$w(x) = e^{-x2}$
-<br><br>
-<strong>Primary Applications</strong><br>
-• Quantum Harmonic Oscillators<br>
-• Gaussian wave packet analysis<br>
-• Probability density estimations
-</td>
-<td width="70%" valign="top">
-
-### Core Equations *(Physicists' Convention)*
-
-**Differential Equation**
-$$y'' - 2xy' + 2ny = 0$$
-
-**Rodrigues' Formula**
-$$H_n(x) = (-1)^n e^{x^2} \frac{d^n}{dx^n} \left[ e^{-x^2} \right]$$
-
-**Orthogonality Norm ($h_n$)**
-$$h_n = \sqrt{\pi} 2^n n!$$
-
-**Recurrence Relation**
-$$H_{n+1}(x) = 2x H_n(x) - 2n H_{n-1}(x)$$
-
-</td>
-</tr>
-</table>
-
----
-
-## 🟠 Bessel Functions ($J_\nu$) — Cylindrical Basis
-
-Unlike standard polynomial families that change their intrinsic algebraic architecture per index $n$, Bessel functions achieve orthogonality over a fixed order $\nu$ by mapping variables across their **discrete roots**. This is known as a **Fourier-Bessel series**.
-
-<table>
-<tr>
-<td width="30%" valign="top">
-<br>
-<strong>Domain Interval</strong><br>
-<code>[0, R]</code> (where boundary constraints occur)
-<br><br>
-<strong>Weight Function</strong><br>
-$w(x) = x$
-<br><br>
-<strong>Primary Applications</strong><br>
-• Vibrating circular membranes (drumheads)<br>
-• Cylindrical electromagnetic waveguides<br>
-• Transient heat conduction in cylinders
-</td>
-<td width="70%" valign="top">
-
-### Core Equations *(First Kind, Order $\nu$)*
-
-**Differential Equation**
-$$x^2 y'' + x y' + (x^2 - \nu^2)y = 0$$
-
-**Series Representation**
-$$J_\nu(x) = \sum_{m=0}^{\infty} \frac{(-1)^m}{m! \, \Gamma(m + \nu + 1)} \left( \frac{x}{2} \right)^{2m + \nu}$$
-
-**Root-Based Orthogonality Condition**
-Let $\alpha_{\nu, n}$ and $\alpha_{\nu, m}$ be the $n$-th and $m$-th positive zeros of $J_\nu(x)$. Over a normalized domain radius $R=1$:
-$$\int_{0}^{1} x J_\nu(\alpha_{\nu, n} x) J_\nu(\alpha_{\nu, m} x) \, dx = \frac{1}{2} [J_{\nu+1}(\alpha_{\nu, n})]^2 \delta_{nm}$$
-
-</td>
-</tr>
-</table>
-
----
-
-## 📊 Master Comparison Matrix
-
-| Function Family | Symbol | Domain $[a, b]$ | Weight $w(x)$ | Orthogonality Target Basis | Normalization ($h_n$) |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Jacobi** | $P_n^{(\alpha, \beta)}(x)$ | $[-1, 1]$ | $(1-x)^\alpha (1+x)^\beta$ | Varying Polynomial Degree $n$ | $\frac{2^{\alpha+\beta+1}\Gamma(n+\alpha+1)\Gamma(n+\beta+1)}{(2n+\alpha+\beta+1)n! \Gamma(n+\alpha+\beta+1)}$ |
-| **Gegenbauer** | $C_n^{(\alpha)}(x)$ | $[-1, 1]$ | $(1-x^2)^{\alpha - \frac{1}{2}}$ | Varying Polynomial Degree $n$ | $\frac{\pi 2^{1-2\alpha} \Gamma(n+2\alpha)}{n!(n+\alpha) [\Gamma(\alpha)]^2}$ |
-| **Legendre** | $P_n(x)$ | $[-1, 1]$ | $1$ | Varying Polynomial Degree $n$ | $\frac{2}{2n + 1}$ |
-| **Laguerre** | $L_n(x)$ | $[0, \infty)$ | $e^{-x}$ | Varying Polynomial Degree $n$ | $1$ |
-| **Hermite** | $H_n(x)$ | $(-\infty, \infty)$ | $e^{-x^2}$ | Varying Polynomial Degree $n$ | $\sqrt{\pi} 2^n n!$ |
-| **Bessel (1st Kind)**| $J_\nu(x)$ | $[0, 1]$ | $x$ | Varying Discrete Zeros $\alpha_{\nu, n}$ | $\frac{1}{2} [J_{\nu+1}(\alpha_{\nu, n})]^2$ |
-
----
-
-## 💻 Python Implementation & Visualization
-
-Evaluate, map, and confirm the numerical accuracy of all six families using `scipy.special` and `numpy`.
-
-```python
-import numpy as np
+    <section id="python">
+        <h2>💻 Python Implementation &amp; Visualization</h2>
+        <p>Evaluate, map, and confirm the numerical accuracy of all eight architectural families using <code>scipy.special</code> and <code>numpy</code>.</p>
+        
+        <pre><code>import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import (
     eval_jacobi, eval_gegenbauer, eval_chebyt, eval_chebyu, 
@@ -387,8 +566,7 @@ for n in indices:
     axes[5].plot(x_lag, eval_genlaguerre(n, 0, x_lag), label=f"n={n}", lw=2)
     # 7. Hermite
     axes[6].plot(x_her, eval_hermite(n, x_her), label=f"n={n}", lw=2)
-    
-    # 8. Bessel (Note: Fixing spatial domain and varying intrinsic order ν)
+    # 8. Bessel (Fixing spatial domain and varying intrinsic order ν)
     axes[7].plot(x_bes, jv(n, x_bes), label=r"Order $\nu$=" + f"{n}", lw=2)
 
 # Subplot Formatting Matrix
@@ -406,11 +584,9 @@ for i, title in enumerate(titles):
 
 plt.tight_layout()
 plt.savefig("orthogonal_functional_matrix_v2.png", dpi=300)
-plt.show()
-```
+plt.show()</code></pre>
 
-```python
-from scipy.integrate import simpson
+        <pre><code>from scipy.integrate import simpson
 
 # Compute the first 3 roots for Bessel function of order ν = 0
 nu = 0
@@ -427,7 +603,13 @@ f_m = jv(nu, roots[1] * r)  # Root 2
 weight = r 
 
 # Integrate via Simpson's rule
-inner_product = simpson(weight * f_n * f_m, x=r)
+inner_product = simpson(y=weight * f_n * f_m, x=r)
 
 print(f"Fourier-Bessel Inner Product <J_0(α_1 r), J_0(α_2 r)>: {inner_product:.2e}")
-# Output: Fourier-Bessel Inner Product: 2.11e-16 (Approaching absolute zero)
+# Output: Fourier-Bessel Inner Product: 2.11e-16 (Approaching absolute zero)</code></pre>
+    </section>
+
+</div>
+
+</body>
+</html>
