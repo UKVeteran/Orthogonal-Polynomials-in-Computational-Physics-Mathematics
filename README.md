@@ -55,8 +55,7 @@ where $\delta_{nm}$ is the Kronecker delta and $h_n$ represents the squared norm
 
 The equations branch based on whether their coordinate domain spaces are flat, spherical, or cylindrical:
 
-```text
-```text
+```
 ┌────────────────────────────────────────────────────────┐
 │             Sturm-Liouville Eigenfunctions             │
 └───────────────────────────┬────────────────────────────┘
