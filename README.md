@@ -56,28 +56,30 @@ where $\delta_{nm}$ is the Kronecker delta and $h_n$ represents the squared norm
 The equations branch based on whether their coordinate domain spaces are flat, spherical, or cylindrical:
 
 ```
-┌────────────────────────────────────────────────────────┐
-│             Sturm-Liouville Eigenfunctions             │
-└───────────────────────────┬────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                Sturm-Liouville Eigenfunctions                │
+└───────────────────────────┬──────────────────────────────────┘
                             │
-            ┌───────────────┴───────────────┐
-            ▼ (Hypergeometric/Polynomial)   ▼ (Cylindrical Wave)
-┌──────────────────────────────┐     ┌──────────────────────────────┐
-│ Jacobi Polynomials           │     │ Bessel Functions             │
-│ P_n^(α, β)(x)                │     │ J_ν(x)                       │
-└──────────────┬───────────────┘     └──────────────────────────────┘
-               │ (α = β)
+              ┌─────────────┴─────────────┐
+              ▼ (Hypergeometric/Algebraic)▼ (Cylindrical Wave)
+┌──────────────────────────────┐    ┌──────────────────────────────┐
+│ Jacobi Polynomials           │    │ Bessel Functions             │
+│ P_n^(α, β)(x)                │    │ J_ν(x)                       │
+└──────────────┬───────────────┘    └──────────────────────────────┘
+               │ (α = β = λ - 1/2)
                ▼
 ┌──────────────────────────────┐
 │ Gegenbauer (Ultraspherical)  │
-│ C_n^(α)(x)                   │
+│ C_n^(λ)(x)                   │
 └──────────────┬───────────────┘
-               │ (α = 1/2)
-               ▼
-┌──────────────────────────────┐
-│ Legendre Polynomials         │
-│ P_n(x)                       │
-└──────────────────────────────┘
+               │
+   ┌───────────┼───────────┐
+   ▼ (λ → 0)   ▼ (λ = 1/2) ▼ (λ = 1)
+┌──────────┐ ┌──────────┐ ┌──────────┐
+│Chebyshev │ │ Legendre │ │Chebyshev │
+│1st Kind  │ │          │ │2nd Kind  │
+│T_n(x)    │ │ P_n(x)   │ │U_n(x)    │
+└──────────┘ └──────────┘ └──────────┘
 ```
 
 ---
