@@ -79,6 +79,7 @@ The equations branch based on whether their coordinate domain spaces are flat, s
 │ Legendre Polynomials         │
 │ P_n(x)                       │
 └──────────────────────────────┘
+'''
 ---
 
 ## 🟣 The Jacobi Super-Family ($P_n^{(\alpha, \beta)}$)
